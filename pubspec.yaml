@@ -27,6 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_line_liff: ^0.0.3
+  flutter_line_sdk: ^2.2.0
   flutter:
     sdk: flutter
 
