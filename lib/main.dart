@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_line_liff/flutter_line_liff.dart';
-import 'package:flutter_line_sdk/flutter_line_sdk.dart';
-
-var userInfo;
 
 Future<void> main() async {
   await FlutterLineLiff().init(
@@ -16,30 +12,12 @@ Future<void> main() async {
           'LIFF init error: ${error.name}, ${error.message}, ${error.stack}');
     },
   );
-  // FlutterLineLiff().ready.then((_) {
-  //   // SDK is ready now.
-  //   final JWTPayload? decodedIDToken = FlutterLineLiff().getDecodedIDToken();
-  //   debugPrint(decodedIDToken.toString());
-  //
-  //   final String? id = FlutterLineLiff().id;
-  //   debugPrint(id);
-  //
-  //   final String? idToken = FlutterLineLiff().getIDToken();
-  //   debugPrint(idToken);
-  //
-  //   debugPrint('ready ok');
-  // });
-  //
-  // final Profile profile = await FlutterLineLiff().profile;
-  // debugPrint(profile.displayName);
-  // debugPrint('test1');
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,20 +42,18 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Profile? userInfo;
 
-  Future<void> getProfiles() async {
-    userInfo = await FlutterLineLiff().profile;
-    debugPrint(userInfo.toString());
-    debugPrint('test1');
-  }
-
   @override
   void initState() {
-    FlutterLineLiff().ready.then((_) {
-      getProfiles();
-      debugPrint('test3');
-    });
+    debugPrint('initState start');
     super.initState();
-    setState(() {});
+
+    Future(() async {
+      userInfo = await FlutterLineLiff().profile;
+      setState(() {});
+      debugPrint('get Profile success');
+    });
+
+    debugPrint('initState end');
   }
 
   void _incrementCounter() {
@@ -88,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('test2');
+    debugPrint('return Scaffold start');
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
