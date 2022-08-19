@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_line_liff/flutter_line_liff.dart';
 
+JWTPayload? decodedIDToken;
+
 Future<void> main() async {
   await FlutterLineLiff().init(
     config: Config(liffId: '1657390584-p2Ar7vyL'),
     successCallback: () {
+      decodedIDToken = FlutterLineLiff().getDecodedIDToken();
+      debugPrint(decodedIDToken?.name);
       debugPrint('LIFF init success.');
     },
     errorCallback: (error) {
@@ -76,6 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
             (userInfo == null)
                 ? Text(userInfo.toString())
                 : Text(userInfo!.displayName),
+            (decodedIDToken == null)
+                ? Text(decodedIDToken.toString())
+                : Text(decodedIDToken!.name.toString()),
             Text(FlutterLineLiff().id!),
             const Text(
               'You have pushed the button this many times:',
