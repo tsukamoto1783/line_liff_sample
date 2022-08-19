@@ -97,7 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(userInfo.toString()),
+            (userInfo == null)
+                ? Text(userInfo.toString())
+                : Text(userInfo!.displayName),
             Text(FlutterLineLiff().id!),
             const Text(
               'You have pushed the button this many times:',
