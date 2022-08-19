@@ -72,8 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    FlutterLineLiff().ready.then((_) {});
+    FlutterLineLiff().ready.then((_) {
+      getProfiles();
+      debugPrint('test3');
+    });
     super.initState();
+    setState(() {});
   }
 
   void _incrementCounter() {
@@ -93,24 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FutureBuilder(
-              future: getProfiles(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Text("Error: ${snapshot.error}");
-                  }
-                  if (!snapshot.hasData) {
-                    return Text("データが見つかりません");
-                  }
-                  // データ表示
-                  return Text('${snapshot.data}');
-                } else {
-                  // 処理中の表示
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
+            Text(userInfo.toString()),
             Text(FlutterLineLiff().id!),
             const Text(
               'You have pushed the button this many times:',
