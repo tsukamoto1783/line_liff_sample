@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_line_liff/flutter_line_liff.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 JWTPayload? decodedIDToken;
 
 Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   await FlutterLineLiff().init(
-    config: Config(liffId: '1657390584-p2Ar7vyL'),
+    config: Config(liffId: dotenv.env['LIFFID_KEY'].toString()),
     successCallback: () {
       decodedIDToken = FlutterLineLiff().getDecodedIDToken();
-      debugPrint(decodedIDToken?.name);
       debugPrint('LIFF init success.');
     },
     errorCallback: (error) {
