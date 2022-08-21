@@ -9,6 +9,8 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      LIFFID_KEY:${{ secrets.LIFFID_KEY }}
     steps:
       - uses: actions/checkout@v2
       # Flutter のインストール clone がはやい
