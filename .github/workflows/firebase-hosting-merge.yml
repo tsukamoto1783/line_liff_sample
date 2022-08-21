@@ -16,7 +16,8 @@ jobs:
       - name: create .env
         run: |
           touch .env
-          echo LIFFID_KEY = "${{secrets.LIFFID_KEY}}" >> .env
+          echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> .env
+          cat .env
 
       # Flutter のインストール clone がはやい
       - name: Install Flutter
