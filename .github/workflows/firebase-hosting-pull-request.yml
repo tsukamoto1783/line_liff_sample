@@ -11,6 +11,13 @@ jobs:
       LIFFID_KEY: '${{secrets.LIFFID_KEY}}'
     steps:
       - uses: actions/checkout@v2
+
+      # .envファイルの作成
+      - name: create .env
+        run: |
+          touch .env
+          echo LIFFID_KEY =${{ secrets.LIFFID_KEY }} >> .env
+
       # Flutter のインストール clone がはやい
       - name: Install Flutter
         run: git clone https://github.com/flutter/flutter.git
