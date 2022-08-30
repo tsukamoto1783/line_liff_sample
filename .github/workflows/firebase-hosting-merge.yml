@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p assets
           touch assets/.env
-          echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> .env
+          echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> assets/.env
           cat assets/.env
 
 
