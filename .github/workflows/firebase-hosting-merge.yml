@@ -15,10 +15,10 @@ jobs:
       # .envファイルの作成
       - name: create assets/.env
         run: |
-          mkdir assets
-          touch /assets/.env
+          mkdir -p assets
+          touch assets/.env
           echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> .env
-          cat /assets/.env
+          cat assets/.env
 
 
       # Flutter のインストール clone がはやい
