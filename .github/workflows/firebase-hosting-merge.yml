@@ -13,12 +13,11 @@ jobs:
       - uses: actions/checkout@v2
 
       # .envファイルの作成
-      - name: create assets/.env
+      - name: create env
         run: |
-          mkdir -p assets
-          touch assets/.env
-          echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> assets/.env
-          cat assets/.env
+          touch env
+          echo LIFFID_KEY=${{secrets.LIFFID_KEY}} >> env
+          cat env
 
 
       # Flutter のインストール clone がはやい
