@@ -1,6 +1,6 @@
 # line_liff_sample
 
-A new Flutter project.
+Line_Liff_sample
 
 ## Getting Started
 
