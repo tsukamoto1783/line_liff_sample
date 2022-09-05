@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 JWTPayload? decodedIDToken;
 
 Future<void> main() async {
-  await dotenv.load(fileName: "assets/env");
+  await dotenv.load(fileName: "env");
   await FlutterLineLiff().init(
     config: Config(liffId: dotenv.env['LIFFID_KEY'].toString()),
     successCallback: () {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'LINE LIFF sample app'),
     );
   }
 }
@@ -44,7 +44,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   Profile? userInfo;
 
   @override
@@ -61,12 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint('initState end');
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     debugPrint('return Scaffold start');
@@ -79,27 +72,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             (userInfo == null)
-                ? Text(userInfo.toString())
-                : Text(userInfo!.displayName),
-            (decodedIDToken == null)
-                ? Text(decodedIDToken.toString())
-                : Text(decodedIDToken!.name.toString()),
-            Text(FlutterLineLiff().id!),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+                ? Text("user name: $userInfo")
+                : Text("user name: $userInfo!.displayName"),
+            // (decodedIDToken == null)
+            //     ? Text(decodedIDToken.toString())
+            //     : Text(decodedIDToken!.name.toString()),
+            // Text(FlutterLineLiff().id!),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
