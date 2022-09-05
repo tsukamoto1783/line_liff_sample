@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             (userInfo == null)
                 ? Text("user name: $userInfo")
-                : Text("user name: $userInfo!.displayName"),
+                : Text("user name: ${userInfo!.displayName}"),
             // (decodedIDToken == null)
             //     ? Text(decodedIDToken.toString())
             //     : Text(decodedIDToken!.name.toString()),
