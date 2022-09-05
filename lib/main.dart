@@ -26,74 +26,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'LINE LIFF sample app'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  Profile? userInfo;
-
-  @override
-  void initState() {
-    debugPrint('initState start');
-    super.initState();
-
-    Future(() async {
-      userInfo = await FlutterLineLiff().profile;
-      setState(() {});
-      debugPrint('get Profile success');
-    });
-
-    debugPrint('initState end');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    debugPrint('return Scaffold start');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text("=========== getProfile ==========="),
-            (userInfo == null)
-                ? const Text("user name: null")
-                : Text("user name: ${userInfo!.displayName}"),
-            (userInfo == null)
-                ? const Text("")
-                : Text("user name: ${userInfo!.userId}"),
-            (userInfo == null)
-                ? const Text("")
-                : Image.network(decodedIDToken!.picture.toString()),
-            (userInfo == null)
-                ? const Text("")
-                : Text("user name: ${userInfo!.statusMessage}"),
-
-            const Text("=========== getDecodeIDToken ==========="),
-            (decodedIDToken == null)
-                ? const Text("decodedIDToken: null")
-                : Text("user name: ${decodedIDToken!.name.toString()}"),
-            (decodedIDToken == null)
-                ? const Text("")
-                : Image.network(decodedIDToken!.picture.toString()),
-            // Text(FlutterLineLiff().id!),
-          ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('LINE LIFF sample app'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text("↓Profile Picture"),
+              Image.asset(
+                'images/cat_sample.jpeg',
+                width: 200.0,
+                height: 200.0,
+              ),
+              const Text("User Name:           ゆーと"),
+              const Text("User ID:                  TestLineID123456789"),
+              const Text("Status Message: ステータスメッセージ(設定してるなら)"),
+            ],
+          ),
         ),
       ),
     );
