@@ -71,12 +71,27 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const Text("=========== getProfile ==========="),
             (userInfo == null)
-                ? Text("user name: $userInfo")
+                ? const Text("user name: null")
                 : Text("user name: ${userInfo!.displayName}"),
-            // (decodedIDToken == null)
-            //     ? Text(decodedIDToken.toString())
-            //     : Text(decodedIDToken!.name.toString()),
+            (userInfo == null)
+                ? const Text("")
+                : Text("user name: ${userInfo!.userId}"),
+            (userInfo == null)
+                ? const Text("")
+                : Image.network(decodedIDToken!.picture.toString()),
+            (userInfo == null)
+                ? const Text("")
+                : Text("user name: ${userInfo!.statusMessage}"),
+
+            const Text("=========== getDecodeIDToken ==========="),
+            (decodedIDToken == null)
+                ? const Text("decodedIDToken: null")
+                : Text("user name: ${decodedIDToken!.name.toString()}"),
+            (decodedIDToken == null)
+                ? const Text("")
+                : Image.network(decodedIDToken!.picture.toString()),
             // Text(FlutterLineLiff().id!),
           ],
         ),
