@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Profile? userInfo;
 Future<void> main() async {
+  // KEYを定義したenvファイル読み込み
   await dotenv.load(fileName: "env");
+  // LIFF初期化処理
   await FlutterLineLiff().init(
     config: Config(liffId: dotenv.env['LIFFID_KEY'].toString()),
     successCallback: () {
@@ -15,6 +17,7 @@ Future<void> main() async {
           'LIFF init error: ${error.name}, ${error.message}, ${error.stack}');
     },
   );
+  // ユーザ情報の取得
   userInfo = await FlutterLineLiff().profile;
   runApp(const MyApp());
 }
@@ -29,7 +32,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('LINE LIFF sample app'),
+        ),
+        body: const HomePage(),
+      ),
     );
   }
 }
@@ -40,36 +48,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userInfo == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('LINE LIFF sample app'),
-        ),
-        body: const Center(
-          child: Text("decodedIDToken: null"),
-        ),
+      return const Center(
+        child: Text("decodedIDToken: null"),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('LINE LIFF sample app'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // // =========== getDecodeIDToken Ver. ===========
-              // const Text("Profile Picture"),
-              // Image.network(decodedIDToken!.picture.toString()),
-              // Text("User Name: ${decodedIDToken!.name.toString()}"),
-
-              // =========== getProfile Ver. ===========
-              const Text("Profile Picture"),
-              Image.network(userInfo!.pictureUrl.toString()),
-              Text("User Name: ${userInfo!.displayName}"),
-              Text("User ID: ${userInfo!.userId}"),
-              Text("Status Message: ${userInfo!.statusMessage}"),
-            ],
-          ),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text("Profile Picture"),
+            Image.network(userInfo!.pictureUrl.toString()),
+            Text("User Name: ${userInfo!.displayName}"),
+            Text("User ID: ${userInfo!.userId}"),
+            Text("Status Message: ${userInfo!.statusMessage}"),
+          ],
         ),
       );
     }
