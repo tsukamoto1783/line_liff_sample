@@ -68,6 +68,20 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const Text("=========== getProfile ==========="),
+            (userInfo == null)
+                ? const Text("user name: null")
+                : Text("user name: ${userInfo!.displayName}"),
+            (userInfo == null)
+                ? const Text("")
+                : Text("user name: ${userInfo!.userId}"),
+            (userInfo == null)
+                ? const Text("")
+                : Image.network(decodedIDToken!.picture.toString()),
+            (userInfo == null)
+                ? const Text("")
+                : Text("user name: ${userInfo!.statusMessage}"),
+
             const Text("=========== getDecodeIDToken ==========="),
             (decodedIDToken == null)
                 ? const Text("decodedIDToken: null")

@@ -11,7 +11,6 @@ async function init(liff_if){
         })
         .catch((err) => {
             console.log(err);
+            return null
         });
-        return null
-
 }
