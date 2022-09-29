@@ -6,13 +6,19 @@ import 'liff_init.dart';
 
 // jsパッケージ版でinit()までしてみる。
 JWTPayload? decodedIDToken;
+Profile? userInfo;
 Future<void> main() async {
   // KEYを定義したenvファイル読み込み
   await dotenv.load(fileName: "env");
   // LIFF初期化処理
   decodedIDToken =
       await promiseToFuture(init(dotenv.env['LIFFID_KEY'].toString()));
-  debugPrint(decodedIDToken.toString());
+  await Future.delayed(const Duration(seconds: 2));
+  userInfo = await promiseToFuture(getProfile());
+  await Future.delayed(const Duration(seconds: 2));
+  debugPrint("decodeIDToken:$decodedIDToken");
+  await Future.delayed(const Duration(seconds: 2));
+  debugPrint("userInfo:$userInfo");
   await Future.delayed(const Duration(seconds: 2));
   runApp(const MyApp());
 }
@@ -68,19 +74,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text("=========== getProfile ==========="),
-            (userInfo == null)
-                ? const Text("user name: null")
-                : Text("user name: ${userInfo!.displayName}"),
-            (userInfo == null)
-                ? const Text("")
-                : Text("user name: ${userInfo!.userId}"),
-            (userInfo == null)
-                ? const Text("")
-                : Image.network(decodedIDToken!.picture.toString()),
-            (userInfo == null)
-                ? const Text("")
-                : Text("user name: ${userInfo!.statusMessage}"),
+            // const Text("=========== getProfile ==========="),
+            // (userInfo == null)
+            //     ? const Text("user name: null")
+            //     : Text("user name: ${userInfo!.displayName}"),
+            // (userInfo == null)
+            //     ? const Text("")
+            //     : Text("user name: ${userInfo!.userId}"),
+            // (userInfo == null)
+            //     ? const Text("")
+            //     : Image.network(decodedIDToken!.picture.toString()),
+            // (userInfo == null)
+            //     ? const Text("")
+            //     : Text("user name: ${userInfo!.statusMessage}"),
 
             const Text("=========== getDecodeIDToken ==========="),
             (decodedIDToken == null)
@@ -89,6 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
             (decodedIDToken == null)
                 ? const Text("")
                 : Image.network(decodedIDToken!.picture.toString()),
+            (userInfo == null)
+                ? const Text("userInfo:null")
+                : Text("user name: ${userInfo.toString()}"),
             // Text(FlutterLineLiff().id!),
           ],
         ),
