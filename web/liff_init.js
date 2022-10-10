@@ -1,34 +1,23 @@
-async function init(liff_if){
-    liff.init({
-        liffId: liff_if, // Use own liffId
+async function init(liffId){
+    await liff.init({
+        liffId: liffId, // Use own liffId
 //        以下を有効にすれば、liff.login()メソッドが自動で実行されます。
-//        withLoginOnExternalBrowser: true, // Enable automatic login process
+        withLoginOnExternalBrowser: true, // Enable automatic login process
     })
         .then(() => {
-            const idToken = liff.getDecodedIDToken();
-            console.log("idToken:"); // print decoded idToken object
-            console.log(idToken); // print decoded idToken object
-            console.log("liff.id:"); // print decoded idToken object
-            console.log(liff.id); // print decoded idToken object
-            return idToken;
+            console.log('liff.init() success')
         })
         .catch((err) => {
-            console.log(err);
-            return null
+            console.log(err)
         });
 }
 
 async function getProfile(){
-    liff
-      .getProfile()
-      .then((profile) => {
-        const name = profile.displayName;
-        console.log("name:");
-        console.log(name);
-        return name;
-      })
-      .catch((err) => {
-        console.log("getProfile error", err);
-
-      });
+    const profile = await liff.getProfile()
+    console.log('liff.getProfile() success')
+    console.log('profile typeof:'+typeof profile)
+    console.log('profile["displayName"] typeof:'+typeof profile["displayName"])
+    const list = [profile["userId"],profile["displayName"],profile["pictureUrl"]]
+    console.log('list typeof: '+typeof list)
+    return list
 }

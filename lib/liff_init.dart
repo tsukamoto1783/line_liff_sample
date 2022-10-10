@@ -4,7 +4,7 @@ library js_func;
 import 'package:js/js.dart';
 
 @JS('init')
-external init(String liff_if);
+external Object init(String liffId);
 
 @JS('getProfile')
-external String getProfile();
+external Object getProfile();

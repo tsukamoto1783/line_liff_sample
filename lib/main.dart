@@ -1,25 +1,17 @@
 import 'dart:js_util';
 import 'package:flutter/material.dart';
-import 'package:flutter_line_liff/flutter_line_liff.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'liff_init.dart';
 
 // jsパッケージ版でinit()までしてみる。
-JWTPayload? decodedIDToken;
-Profile? userInfo;
 Future<void> main() async {
   // KEYを定義したenvファイル読み込み
   await dotenv.load(fileName: "env");
+  String liffID = dotenv.get("LIFFID_KEY", fallback: "LIFFID not found");
+
   // LIFF初期化処理
-  decodedIDToken =
-      await promiseToFuture(init(dotenv.env['LIFFID_KEY'].toString()));
-  await Future.delayed(const Duration(seconds: 2));
-  userInfo = await promiseToFuture(getProfile());
-  await Future.delayed(const Duration(seconds: 2));
-  debugPrint("decodeIDToken:$decodedIDToken");
-  await Future.delayed(const Duration(seconds: 2));
-  debugPrint("userInfo:$userInfo");
-  await Future.delayed(const Duration(seconds: 2));
+  await promiseToFuture(init(liffID));
+
   runApp(const MyApp());
 }
 
@@ -28,26 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'LINE LIFF sample app'),
+      home: MyAppBody(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
+class MyAppBody extends StatefulWidget {
+  const MyAppBody({Key? key}) : super(key: key);
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyAppBody> createState() => _MyAppBodyState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  Profile? userInfo;
+class _MyAppBodyState extends State<MyAppBody> {
+  static const List profileKeysList = ["userId", "displayName", "pictureUrl"];
+  Map profileMap = {"userId": "", "displayName": "", "pictureUrl": ""};
+  List? profile;
 
   @override
   void initState() {
@@ -55,52 +44,44 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     Future(() async {
-      userInfo = await FlutterLineLiff().profile;
-      setState(() {});
-      debugPrint('get Profile success');
-    });
+      debugPrint('get Profile start');
+      profile = await promiseToFuture(getProfile());
 
+      // 取得したprofile情報をMapに格納
+      for (int i = 0; i < profile!.length; i++) {
+        profileMap.update(profileKeysList[i], (value) => profile![i]);
+      }
+
+      setState(() {});
+      debugPrint('get Profile end');
+    });
     debugPrint('initState end');
   }
 
   @override
   Widget build(BuildContext context) {
     debugPrint('return Scaffold start');
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('LINE LIFF sample app'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // const Text("=========== getProfile ==========="),
-            // (userInfo == null)
-            //     ? const Text("user name: null")
-            //     : Text("user name: ${userInfo!.displayName}"),
-            // (userInfo == null)
-            //     ? const Text("")
-            //     : Text("user name: ${userInfo!.userId}"),
-            // (userInfo == null)
-            //     ? const Text("")
-            //     : Image.network(decodedIDToken!.picture.toString()),
-            // (userInfo == null)
-            //     ? const Text("")
-            //     : Text("user name: ${userInfo!.statusMessage}"),
-
-            const Text("=========== getDecodeIDToken ==========="),
-            (decodedIDToken == null)
-                ? const Text("decodedIDToken: null")
-                : Text("user name: ${decodedIDToken!.name.toString()}"),
-            (decodedIDToken == null)
-                ? const Text("")
-                : Image.network(decodedIDToken!.picture.toString()),
-            (userInfo == null)
-                ? const Text("userInfo:null")
-                : Text("user name: ${userInfo.toString()}"),
-            // Text(FlutterLineLiff().id!),
-          ],
-        ),
+        child: (profile == null)
+            ? const Text("profile is null")
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text("=========== Profile ==========="),
+                  Text("user ID: ${profileMap["userId"]}"),
+                  Text("user name: ${profileMap["displayName"]}"),
+                  SizedBox(
+                    width: 250.0,
+                    height: 250.0,
+                    child: Image.network(profileMap["pictureUrl"]),
+                  )
+                ],
+              ),
       ),
     );
   }
