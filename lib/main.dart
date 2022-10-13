@@ -1,23 +1,21 @@
 import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'liff_init.dart';
+import 'package:line_liff_sample/liff/liff_func_call.dart';
 
-// jsパッケージ版でinit()までしてみる。
 Future<void> main() async {
-  // KEYを定義したenvファイル読み込み
+  // LiffIDを定義したenvファイル読み込み
   await dotenv.load(fileName: "env");
   String liffID = dotenv.get("LIFFID_KEY", fallback: "LIFFID not found");
 
-  // LIFF初期化処理
-  await promiseToFuture(init(liffID));
+  // Liff初期化処理
+  await promiseToFuture(liffInit(liffID));
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -40,28 +38,21 @@ class _MyAppBodyState extends State<MyAppBody> {
 
   @override
   void initState() {
-    debugPrint('initState start');
     super.initState();
-
     Future(() async {
-      debugPrint('get Profile start');
-      profile = await promiseToFuture(getProfile());
+      // profile情報の取得
+      profile = await promiseToFuture(liffGetProfile());
 
       // 取得したprofile情報をMapに格納
       for (int i = 0; i < profile!.length; i++) {
         profileMap.update(profileKeysList[i], (value) => profile![i]);
       }
-
       setState(() {});
-      debugPrint('get Profile end');
     });
-    debugPrint('initState end');
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('return Scaffold start');
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('LINE LIFF sample app'),
@@ -72,9 +63,9 @@ class _MyAppBodyState extends State<MyAppBody> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text("=========== Profile ==========="),
-                  Text("user ID: ${profileMap["userId"]}"),
-                  Text("user name: ${profileMap["displayName"]}"),
+                  Text("ユーザーID: ${profileMap["userId"]}"),
+                  Text("ユーザー名: ${profileMap["displayName"]}"),
+                  const Text("トプ画:↓"),
                   SizedBox(
                     width: 250.0,
                     height: 250.0,
