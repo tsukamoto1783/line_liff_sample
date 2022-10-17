@@ -10,7 +10,7 @@
 .svn/
 migrate_working_dir/
 *env
-.fvm/fvm_config.json
+.fvm/flutter_sdk
 
 # IntelliJ related
 *.iml
