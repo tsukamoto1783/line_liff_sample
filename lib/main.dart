@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:line_liff_sample/liff/liff_func_call.dart';
 
+const List profileKeysList = ["userId", "displayName", "pictureUrl"];
+Map profileMap = {"userId": "", "displayName": "", "pictureUrl": ""};
+List? profile;
+
 Future<void> main() async {
   // LiffIDを定義したenvファイル読み込み
   await dotenv.load(fileName: "env");
@@ -10,6 +14,14 @@ Future<void> main() async {
 
   // Liff初期化処理
   await promiseToFuture(liffInit(liffID));
+
+  // profile情報の取得
+  profile = await promiseToFuture(liffGetProfile());
+
+  // 取得したprofile情報をMapに格納
+  for (int i = 0; i < profile!.length; i++) {
+    profileMap.update(profileKeysList[i], (value) => profile![i]);
+  }
 
   runApp(const MyApp());
 }
@@ -25,32 +37,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppBody extends StatefulWidget {
+class MyAppBody extends StatelessWidget {
   const MyAppBody({Key? key}) : super(key: key);
-  @override
-  State<MyAppBody> createState() => _MyAppBodyState();
-}
-
-class _MyAppBodyState extends State<MyAppBody> {
-  static const List profileKeysList = ["userId", "displayName", "pictureUrl"];
-  Map profileMap = {"userId": "", "displayName": "", "pictureUrl": ""};
-  List? profile;
-
-  @override
-  void initState() {
-    super.initState();
-    Future(() async {
-      // profile情報の取得
-      profile = await promiseToFuture(liffGetProfile());
-
-      // 取得したprofile情報をMapに格納
-      for (int i = 0; i < profile!.length; i++) {
-        profileMap.update(profileKeysList[i], (value) => profile![i]);
-      }
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
