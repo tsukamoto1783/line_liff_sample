@@ -1,4 +1,4 @@
-# Flutter Web × LINE LIFF とのサンプルアプリ
+# Flutter Web × LINE LIFF のサンプルアプリ
 
 ### ↓詳細
 【zenn】  
